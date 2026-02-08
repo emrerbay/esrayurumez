@@ -5,7 +5,7 @@ const nextConfig = {
     unoptimized: process.env.VERCEL ? false : false,
   },
   async rewrites() {
-    return [{ source: "/favicon.ico", destination: "/logo/logo.png" }];
+    return [{ source: "/favicon.ico", destination: "/logo/logo.ico" }];
   },
 };
 

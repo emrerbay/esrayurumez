@@ -36,7 +36,7 @@ export default async function RootLayout({
   return (
     <html lang="tr" className="font-body" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/logo/logo.png" type="image/png" />
+        <link rel="icon" href="/logo/logo.ico" type="image/x-icon" />
       </head>
       <body className="min-h-screen flex flex-col antialiased" suppressHydrationWarning>
         <Header settings={settings} />
