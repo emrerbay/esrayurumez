@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #1c8d8a;
+  --secondary: #5ec5c0;
+  --light-blue: #a7d9f5;
+  --accent: #ffb74d;
+  --bg: #ffffff;
+  --bg-accent: #f0f4f8;
+  --text: #2c3e50;
+  /* Google Fonts için layout’a <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" /> ekleyebilirsiniz */
+  --font-poppins: "Poppins", system-ui, sans-serif;
+  --font-figtree: "Figtree", system-ui, sans-serif;
+}
+
+body {
+  color: var(--text);
+  background: var(--bg);
+  font-family: var(--font-figtree), sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-poppins), sans-serif;
+}
+
+/* Prose for blog and about */
+.prose-calm h2 {
+  @apply text-primary mt-8 mb-4 text-xl font-semibold;
+}
+.prose-calm h3 {
+  @apply text-text-main mt-6 mb-3 text-lg font-medium;
+}
+.prose-calm p {
+  @apply mb-4 leading-relaxed;
+}
+.prose-calm ul, .prose-calm ol {
+  @apply mb-4 pl-6;
+}
+.prose-calm li {
+  @apply mb-1;
+}
+.prose-calm a {
+  @apply text-primary underline hover:text-secondary transition-colors;
+}
+
+/* Focus for accessibility */
+*:focus-visible {
+  @apply outline-2 outline-offset-2 outline-primary;
+}

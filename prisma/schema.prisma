@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Post {
+  id              String    @id @default(cuid())
+  slug            String    @unique
+  title           String
+  excerpt         String?
+  htmlContent     String
+  coverImageUrl   String?
+  tags            String    // JSON array as string for SQLite
+  published       Boolean   @default(true)
+  sourceDocxPath  String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  comments        Comment[]
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  name      String
+  email     String?
+  message   String
+  rating    Int?
+  status    String   @default("PENDING") // PENDING, APPROVED, SPAM
+  ipHash    String?
+  kvkkConsent Boolean @default(false)
+  createdAt DateTime @default(now())
+}
+
+model SiteSettings {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String // JSON string
+}
+
+model ContactMessage {
+  id      String   @id @default(cuid())
+  name    String
+  email   String
+  phone   String?
+  message String
+  status  String   @default("NEW") // NEW, READ, ARCHIVED
+  createdAt DateTime @default(now())
+}
+
+model GuestbookEntry {
+  id        String   @id @default(cuid())
+  name      String
+  email     String?
+  message   String
+  status    String   @default("PENDING") // PENDING, APPROVED
+  createdAt DateTime @default(now())
+}
