@@ -21,6 +21,7 @@ export function AdminSidebar() {
         <Link href="/admin/dashboard" className="block py-2 text-sm text-text-main hover:text-primary">Dashboard</Link>
         <Link href="/admin/posts" className="block py-2 text-sm text-text-main hover:text-primary">Yazılar</Link>
         <Link href="/admin/comments" className="block py-2 text-sm text-text-main hover:text-primary">Yorumlar</Link>
+        <Link href="/admin/gallery" className="block py-2 text-sm text-text-main hover:text-primary">Galeri</Link>
         <Link href="/admin/settings" className="block py-2 text-sm text-text-main hover:text-primary">Site Ayarları</Link>
         <Link href="/" className="block py-2 text-sm text-text-main hover:text-primary">Siteye Dön</Link>
         <button type="button" onClick={logout} className="block pt-4 text-sm text-red-600 hover:underline text-left">

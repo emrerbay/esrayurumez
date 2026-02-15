@@ -1,6 +1,6 @@
 import { prisma } from "@/src/lib/db";
 
-const BASE = process.env.SITE_URL ?? "https://esrayurumez.com";
+const BASE = process.env.SITE_URL ?? "https://esrayurumez.com.tr";
 
 type SitemapEntry = {
   url: string;

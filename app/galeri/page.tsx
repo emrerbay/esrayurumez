@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getGalleryFilenames } from "@/src/lib/gallery";
 import { GalleryGrid } from "@/src/components/GalleryGrid";
+import { prisma } from "@/src/lib/db";
 
 export const metadata: Metadata = {
   title: "Galeri",
@@ -9,12 +10,29 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default function GaleriPage() {
-  const filenames = getGalleryFilenames();
-  const images = filenames.map((f) => ({
-    src: `/api/gallery/image?f=${encodeURIComponent(f)}`,
-    alt: `Galeri - ${f}`,
-  }));
+export default async function GaleriPage() {
+  let images: { src: string; alt: string }[] = [];
+  try {
+    const dbImages = await prisma.galleryImage.findMany({
+      orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
+      select: { id: true },
+    });
+    if (dbImages.length > 0) {
+      images = dbImages.map((row) => ({
+        src: `/api/gallery/image/${row.id}`,
+        alt: `Galeri fotoğrafı`,
+      }));
+    }
+  } catch {
+    // DB yoksa veya hata varsa filesystem'e düşeceğiz
+  }
+  if (images.length === 0) {
+    const filenames = getGalleryFilenames();
+    images = filenames.map((f) => ({
+      src: `/api/gallery/image?f=${encodeURIComponent(f)}`,
+      alt: `Galeri - ${f}`,
+    }));
+  }
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-12 md:py-16">

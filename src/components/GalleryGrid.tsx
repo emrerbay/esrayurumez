@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Lightbox } from "./Lightbox";
+import { Lightbox, type LightboxImage } from "./Lightbox";
 
 interface ImageItem {
   src: string;
@@ -10,7 +10,7 @@ interface ImageItem {
 }
 
 export function GalleryGrid({ images }: { images: ImageItem[] }) {
-  const [lightbox, setLightbox] = useState<ImageItem | null>(null);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   if (images.length === 0) {
     return (
@@ -20,6 +20,11 @@ export function GalleryGrid({ images }: { images: ImageItem[] }) {
     );
   }
 
+  const lightboxImages: LightboxImage[] = images.map((img) => ({
+    src: img.src,
+    alt: img.alt,
+  }));
+
   return (
     <>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
@@ -28,7 +33,7 @@ export function GalleryGrid({ images }: { images: ImageItem[] }) {
             key={i}
             type="button"
             className="relative aspect-square rounded-xl overflow-hidden bg-bg-accent focus:ring-2 focus:ring-primary focus:ring-offset-2"
-            onClick={() => setLightbox(img)}
+            onClick={() => setLightboxIndex(i)}
           >
             <Image
               src={img.src}
@@ -41,11 +46,12 @@ export function GalleryGrid({ images }: { images: ImageItem[] }) {
           </button>
         ))}
       </div>
-      {lightbox && (
+      {lightboxIndex !== null && (
         <Lightbox
-          src={lightbox.src}
-          alt={lightbox.alt}
-          onClose={() => setLightbox(null)}
+          images={lightboxImages}
+          currentIndex={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+          onIndexChange={setLightboxIndex}
         />
       )}
     </>

@@ -60,3 +60,11 @@ model GuestbookEntry {
   status    String   @default("PENDING") // PENDING, APPROVED
   createdAt DateTime @default(now())
 }
+
+model GalleryImage {
+  id        String   @id @default(cuid())
+  data      Bytes    // image binary
+  mimeType  String   // image/jpeg, image/png, etc.
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+}

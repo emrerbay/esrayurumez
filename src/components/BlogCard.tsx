@@ -22,7 +22,7 @@ export function BlogCard({ slug, title, excerpt, coverImageUrl, updatedAt }: Blo
         <Link href={`/blog/${slug}`} className="relative w-full sm:w-48 h-40 sm:h-32 shrink-0 rounded-xl overflow-hidden bg-bg-accent">
           <Image
             src={coverImageUrl}
-            alt=""
+            alt={title}
             fill
             className="object-cover"
             sizes="(max-width: 640px) 100vw, 192px"
