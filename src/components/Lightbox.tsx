@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useCallback } from "react";
+import { useEffect } from "react";
 
 export interface LightboxImage {
   src: string;
@@ -22,14 +22,15 @@ export function Lightbox({
 }: LightboxProps) {
   const total = images.length;
   const current = images[currentIndex];
-  const goPrev = useCallback(() => {
+
+  function goPrev() {
     const next = currentIndex <= 0 ? total - 1 : currentIndex - 1;
     onIndexChange?.(next);
-  }, [currentIndex, total, onIndexChange]);
-  const goNext = useCallback(() => {
+  }
+  function goNext() {
     const next = currentIndex >= total - 1 ? 0 : currentIndex + 1;
     onIndexChange?.(next);
-  }, [currentIndex, total, onIndexChange]);
+  }
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -43,7 +44,7 @@ export function Lightbox({
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
     };
-  }, [onClose, goPrev, goNext]);
+  }, [onClose, currentIndex, total, onIndexChange]);
 
   if (!current) return null;
 
