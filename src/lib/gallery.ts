@@ -36,3 +36,9 @@ export function getGalleryFilenames(): string[] {
     return numA - numB;
   });
 }
+
+/** Görünür klasör görselleri (gizli listesi dışında) */
+export function getVisibleGalleryFilenames(hiddenFilenames: string[]): string[] {
+  const hidden = new Set(hiddenFilenames.map((f) => f.trim().toLowerCase()));
+  return getGalleryFilenames().filter((f) => !hidden.has(f.toLowerCase()));
+}

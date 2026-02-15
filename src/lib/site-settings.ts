@@ -24,6 +24,8 @@ export interface SiteSettingsMap {
   footerDescription?: string;
   /** Yorum / misafir defteri bildirimi gönderilecek e-posta (admin’den düzenlenebilir) */
   notificationEmail?: string;
+  /** Galeriden kaldırılan (gizlenen) klasör görselleri – dosya adları */
+  galleryHiddenFiles?: string[];
 }
 
 /** Ankara Üniversitesi Tıp Fakültesi Cebeci Hastanesi, Mamak/Ankara — harita boş bırakılırsa bu kullanılır */
@@ -49,6 +51,7 @@ const DEFAULTS: SiteSettingsMap = {
   profileWorkAreas: "Bebek, çocuk ve ergen ruh sağlığı değerlendirme ve tedavisi\nOtizm spektrum bozuklukları\nAile danışmanlığı ve ebeveyn destek programları\nOkul çağı çocuklarında davranış ve dikkat sorunları\nErgenlerde kaygı, depresyon ve kimlik gelişimi",
   footerDescription: "Çocuk ve Ergen Ruh Sağlığı alanında bilimsel ve empatik destek.",
   notificationEmail: "emrerbay.st@gmail.com",
+  galleryHiddenFiles: [],
 };
 
 export async function getSiteSettings(): Promise<SiteSettingsMap> {

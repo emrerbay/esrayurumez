@@ -1,18 +1,41 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/src/lib/auth";
 import { prisma } from "@/src/lib/db";
+import { getSiteSettings } from "@/src/lib/site-settings";
+import { getVisibleGalleryFilenames } from "@/src/lib/gallery";
 
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 const MAX_SIZE = 10 * 1024 * 1024; // 10 MB
 
+const FILE_PREFIX = "file:";
+
 export async function GET() {
   await requireAdmin();
   try {
-    const list = await prisma.galleryImage.findMany({
-      orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
-      select: { id: true, mimeType: true, sortOrder: true, createdAt: true },
-    });
-    return NextResponse.json(list);
+    const [dbList, settings] = await Promise.all([
+      prisma.galleryImage.findMany({
+        orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
+        select: { id: true, mimeType: true, sortOrder: true, createdAt: true },
+      }),
+      getSiteSettings(),
+    ]);
+    const hidden = settings.galleryHiddenFiles ?? [];
+    const fsFilenames = getVisibleGalleryFilenames(hidden);
+
+    const dbItems = dbList.map((row) => ({
+      id: row.id,
+      source: "db" as const,
+      mimeType: row.mimeType,
+      sortOrder: row.sortOrder,
+      createdAt: row.createdAt,
+    }));
+    const fsItems = fsFilenames.map((filename) => ({
+      id: FILE_PREFIX + filename,
+      source: "filesystem" as const,
+      filename,
+    }));
+
+    return NextResponse.json([...dbItems, ...fsItems]);
   } catch {
     return NextResponse.json(
       { error: "Veritabanına bağlanılamadı." },

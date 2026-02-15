@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { getGalleryFilenames } from "@/src/lib/gallery";
+import { getVisibleGalleryFilenames } from "@/src/lib/gallery";
 import { GalleryGrid } from "@/src/components/GalleryGrid";
 import { prisma } from "@/src/lib/db";
+import { getSiteSettings } from "@/src/lib/site-settings";
 
 export const metadata: Metadata = {
   title: "Galeri",
@@ -27,7 +28,14 @@ export default async function GaleriPage() {
     // DB yoksa veya hata varsa filesystem'e düşeceğiz
   }
   if (images.length === 0) {
-    const filenames = getGalleryFilenames();
+    let hidden: string[] = [];
+    try {
+      const settings = await getSiteSettings();
+      hidden = settings.galleryHiddenFiles ?? [];
+    } catch {
+      // ignore
+    }
+    const filenames = getVisibleGalleryFilenames(hidden);
     images = filenames.map((f) => ({
       src: `/api/gallery/image?f=${encodeURIComponent(f)}`,
       alt: `Galeri - ${f}`,

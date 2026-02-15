@@ -3,12 +3,14 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
-type GalleryItem = {
-  id: string;
-  mimeType: string;
-  sortOrder: number;
-  createdAt: string;
-};
+type GalleryItem =
+  | { id: string; source: "db"; mimeType: string; sortOrder: number; createdAt: string }
+  | { id: string; source: "filesystem"; filename: string };
+
+function imageUrl(item: GalleryItem): string {
+  if (item.source === "db") return `/api/gallery/image/${item.id}`;
+  return `/api/gallery/image?f=${encodeURIComponent(item.filename)}`;
+}
 
 export function AdminGalleryClient() {
   const [items, setItems] = useState<GalleryItem[]>([]);
@@ -59,7 +61,7 @@ export function AdminGalleryClient() {
     if (!confirm("Bu görseli galeriden kaldırmak istediğinize emin misiniz?")) return;
     setMessage(null);
     try {
-      const res = await fetch(`/api/admin/gallery/${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/admin/gallery/${encodeURIComponent(id)}`, { method: "DELETE" });
       const data = await res.json().catch(() => ({}));
       if (res.ok) {
         setMessage({ type: "ok", text: "Görsel kaldırıldı." });
@@ -106,7 +108,7 @@ export function AdminGalleryClient() {
 
       {items.length === 0 ? (
         <p className="text-text-main/70 py-8">
-          Henüz galeri görseli yok. Yukarıdan ekleyebilirsiniz. Galeri sayfası boş görünür; ilk görseli ekledikten sonra sadece veritabanındaki görseller listelenir.
+          Henüz galeri görseli yok. Yukarıdan ekleyebilirsiniz veya klasöre (esrayurumez-files/photos) görsel ekleyip sayfayı yenileyin.
         </p>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
@@ -117,8 +119,8 @@ export function AdminGalleryClient() {
             >
               <div className="relative aspect-square bg-bg-accent">
                 <Image
-                  src={`/api/gallery/image/${item.id}`}
-                  alt="Galeri"
+                  src={imageUrl(item)}
+                  alt={item.source === "filesystem" ? item.filename : "Galeri"}
                   fill
                   className="object-cover"
                   sizes="200px"
