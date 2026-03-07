@@ -9,28 +9,38 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
-  const post = await prisma.post.findUnique({ where: { slug, published: true } });
-  if (!post) return { title: "Yazı bulunamadı" };
-  const desc = post.excerpt ?? post.title;
-  return {
-    title: post.title,
-    description: desc.slice(0, 160),
-    openGraph: { title: post.title, description: desc },
-  };
+  try {
+    const { slug } = await params;
+    const post = await prisma.post.findUnique({ where: { slug, published: true } });
+    if (!post) return { title: "Yazı bulunamadı" };
+    const title = post.title ?? "Yazı";
+    const desc = String(post.excerpt ?? post.title ?? "").slice(0, 160);
+    return {
+      title,
+      description: desc,
+      openGraph: { title, description: desc },
+    };
+  } catch {
+    return { title: "Blog" };
+  }
 }
 
 export default async function BlogPostPage({ params }: Props) {
-  const { slug } = await params;
-  const post = await prisma.post.findUnique({
-    where: { slug, published: true },
-    include: {
-      comments: {
-        where: { status: "APPROVED" },
-        orderBy: { createdAt: "desc" },
+  let post = null;
+  try {
+    const { slug } = await params;
+    post = await prisma.post.findUnique({
+      where: { slug, published: true },
+      include: {
+        comments: {
+          where: { status: "APPROVED" },
+          orderBy: { createdAt: "desc" },
+        },
       },
-    },
-  });
+    });
+  } catch {
+    notFound();
+  }
   if (!post) notFound();
 
   const avgRating =
