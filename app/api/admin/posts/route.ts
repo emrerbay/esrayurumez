@@ -33,7 +33,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Sadece .docx dosyaları desteklenir." }, { status: 400 });
     }
     const buf = Buffer.from(await file.arrayBuffer());
-    const safeName = path.basename(file.name).replace(/[^a-zA-Z0-9._\s-]/g, "_");
+    const originalName = path.basename(file.name);
+    const safeName = originalName.replace(/[^a-zA-Z0-9._\s-]/g, "_");
 
     // Vercel'de dosya sistemi salt okunur; docx'i /tmp'e yazıp oradan parse ediyoruz
     const isVercel = !!process.env.VERCEL;
@@ -52,8 +53,9 @@ export async function POST(request: NextRequest) {
       if (isVercel && fs.existsSync(destPath)) fs.unlinkSync(destPath);
     }
 
-    const title = titleFromFilename(safeName);
-    const slug = slugFromFilename(safeName);
+    // Başlık orijinal dosya adından (Türkçe karakterler korunur); slug dosya adından üretilir
+    const title = titleFromFilename(originalName);
+    const slug = slugFromFilename(originalName);
     const sourceDocxPath = isVercel ? null : destPath;
 
     try {
