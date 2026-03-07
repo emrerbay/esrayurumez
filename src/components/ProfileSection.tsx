@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const DEFAULT_UNVAN = "Bebek, Çocuk ve Ergen Psikiyatrisi Uzmanı";
+const DEFAULT_UNVAN = "Bebek, Çocuk ve Ergen Psikiyatristi Uzmanı";
 const DEFAULT_KURUMLAR = [
   "Ankara Üniversitesi Tıp Fakültesi",
   "Çocuk ve Ergen Ruh Sağlığı ve Hastalıkları Anabilim Dalı Öğretim Üyesi",

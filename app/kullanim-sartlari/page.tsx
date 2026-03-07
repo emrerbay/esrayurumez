@@ -17,7 +17,7 @@ const STATIC_TERMS = (
 
     <h2>1. Site Hakkında</h2>
     <p>
-      Bu Site, Prof. Dr. Esra Yürümez’in (Bebek, Çocuk ve Ergen Psikiyatrisi Uzmanı) tanıtımı,
+      Bu Site, Prof. Dr. Esra Yürümez’in (Bebek, Çocuk ve Ergen Psikiyatristi Uzmanı) tanıtımı,
       bilgilendirme içerikleri, blog yazıları, iletişim ve randevu talebi için kullanılmaktadır.
       Site sahibi ve içerik sorumlusu Prof. Dr. Esra Yürümez’dir.
     </p>

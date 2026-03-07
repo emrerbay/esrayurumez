@@ -28,25 +28,40 @@ export async function POST(request: NextRequest) {
     if (!file || !file.name) {
       return NextResponse.json({ error: "Dosya gerekli." }, { status: 400 });
     }
-    const buf = Buffer.from(await file.arrayBuffer());
-    const blogsDir = path.join(process.cwd(), "esrayurumez-files", "blogs");
-    const safeName = path.basename(file.name).replace(/[^a-zA-Z0-9._\s-]/g, "_");
-    const destPath = path.join(blogsDir, safeName);
-    if (!fs.existsSync(blogsDir)) fs.mkdirSync(blogsDir, { recursive: true });
-    fs.writeFileSync(destPath, buf);
-    const ext = path.extname(safeName).toLowerCase();
+    const ext = path.extname(file.name).toLowerCase();
     if (ext !== ".docx") {
       return NextResponse.json({ error: "Sadece .docx dosyaları desteklenir." }, { status: 400 });
     }
+    const buf = Buffer.from(await file.arrayBuffer());
+    const safeName = path.basename(file.name).replace(/[^a-zA-Z0-9._\s-]/g, "_");
+
+    // Vercel'de dosya sistemi salt okunur; docx'i /tmp'e yazıp oradan parse ediyoruz
+    const isVercel = !!process.env.VERCEL;
+    const workDir = isVercel
+      ? path.join("/tmp", "esrayurumez-blogs")
+      : path.join(process.cwd(), "esrayurumez-files", "blogs");
+    const destPath = path.join(workDir, `${Date.now()}-${safeName}`);
+    if (!fs.existsSync(workDir)) fs.mkdirSync(workDir, { recursive: true });
+    fs.writeFileSync(destPath, buf);
+
+    let html: string;
+    try {
+      const result = await parseDocxToHtml(destPath);
+      html = result.html;
+    } finally {
+      if (isVercel && fs.existsSync(destPath)) fs.unlinkSync(destPath);
+    }
+
     const title = titleFromFilename(safeName);
     const slug = slugFromFilename(safeName);
-    const { html } = await parseDocxToHtml(destPath);
+    const sourceDocxPath = isVercel ? null : destPath;
+
     try {
       const existing = await prisma.post.findUnique({ where: { slug } });
       if (existing) {
         await prisma.post.update({
           where: { slug },
-          data: { htmlContent: html, title, sourceDocxPath: destPath, updatedAt: new Date() },
+          data: { htmlContent: html, title, sourceDocxPath, updatedAt: new Date() },
         });
         return NextResponse.json({ success: true, slug });
       }
@@ -57,7 +72,7 @@ export async function POST(request: NextRequest) {
           htmlContent: html,
           tags: "[]",
           published: true,
-          sourceDocxPath: destPath,
+          sourceDocxPath,
         },
       });
       return NextResponse.json({ success: true, slug });

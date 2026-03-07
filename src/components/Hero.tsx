@@ -14,7 +14,7 @@ export function Hero({ title, subtitle, ctaText = "Randevu Talep Et" }: HeroProp
       <div className="relative max-w-6xl mx-auto px-4 py-12 md:py-16">
         <div className="max-w-3xl">
           <p className="font-heading text-primary font-semibold text-xs md:text-sm uppercase tracking-[0.2em] mb-3">
-            Bebek, Çocuk ve Ergen Psikiyatrisi
+            Bebek, Çocuk ve Ergen Psikiyatristi
           </p>
           <h1 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-text-main mb-4 leading-[1.15] tracking-tight">
             {title}

@@ -13,6 +13,12 @@ type Settings = {
   linkedinUrl?: string;
   whatsappNumber?: string;
   mapEmbedUrl?: string;
+  contactPageTitle?: string;
+  contactSectionInfo?: string;
+  contactSectionForm?: string;
+  contactSectionMap?: string;
+  contactWhatsappButton?: string;
+  contactDirectionsButton?: string;
   privacyPolicy?: string;
   termsOfUse?: string;
   profileTitle?: string;
@@ -33,6 +39,12 @@ const defaultSettings: Settings = {
   linkedinUrl: "",
   whatsappNumber: "",
   mapEmbedUrl: "",
+  contactPageTitle: "",
+  contactSectionInfo: "",
+  contactSectionForm: "",
+  contactSectionMap: "",
+  contactWhatsappButton: "",
+  contactDirectionsButton: "",
   privacyPolicy: "",
   termsOfUse: "",
   profileTitle: "",
@@ -144,13 +156,42 @@ export function AdminSettingsClient() {
             <label className="block text-sm text-text-main/80 mb-1">Google Maps embed URL (İletişim sayfası haritası)</label>
             <textarea rows={2} value={settings.mapEmbedUrl ?? ""} onChange={(e) => update("mapEmbedUrl", e.target.value)} className="w-full px-4 py-2 rounded-lg border font-mono text-sm" placeholder="Google Maps Paylaş → Harita yerleştir ile alınan iframe src adresi" />
           </div>
+          <div className="border-t pt-4 mt-4">
+            <p className="text-sm font-medium text-text-main/90 mb-2">İletişim sayfası metinleri</p>
+            <div className="space-y-3">
+              <div>
+                <label className="block text-sm text-text-main/80 mb-1">Sayfa başlığı</label>
+                <input type="text" value={settings.contactPageTitle ?? ""} onChange={(e) => update("contactPageTitle", e.target.value)} className="w-full px-4 py-2 rounded-lg border" placeholder="İletişim" />
+              </div>
+              <div>
+                <label className="block text-sm text-text-main/80 mb-1">Bölüm: İletişim bilgileri başlığı</label>
+                <input type="text" value={settings.contactSectionInfo ?? ""} onChange={(e) => update("contactSectionInfo", e.target.value)} className="w-full px-4 py-2 rounded-lg border" placeholder="İletişim Bilgileri" />
+              </div>
+              <div>
+                <label className="block text-sm text-text-main/80 mb-1">Bölüm: Form başlığı (Randevu / Mesaj)</label>
+                <input type="text" value={settings.contactSectionForm ?? ""} onChange={(e) => update("contactSectionForm", e.target.value)} className="w-full px-4 py-2 rounded-lg border" placeholder="Randevu / Mesaj" />
+              </div>
+              <div>
+                <label className="block text-sm text-text-main/80 mb-1">Bölüm: Harita başlığı</label>
+                <input type="text" value={settings.contactSectionMap ?? ""} onChange={(e) => update("contactSectionMap", e.target.value)} className="w-full px-4 py-2 rounded-lg border" placeholder="Konum" />
+              </div>
+              <div>
+                <label className="block text-sm text-text-main/80 mb-1">WhatsApp buton metni</label>
+                <input type="text" value={settings.contactWhatsappButton ?? ""} onChange={(e) => update("contactWhatsappButton", e.target.value)} className="w-full px-4 py-2 rounded-lg border" placeholder="WhatsApp ile Yaz" />
+              </div>
+              <div>
+                <label className="block text-sm text-text-main/80 mb-1">Yol tarifi buton metni</label>
+                <input type="text" value={settings.contactDirectionsButton ?? ""} onChange={(e) => update("contactDirectionsButton", e.target.value)} className="w-full px-4 py-2 rounded-lg border" placeholder="Yol tarifi al" />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
       <section>
         <h2 className="font-heading font-medium text-lg mb-3">Anasayfa Profil</h2>
         <div className="space-y-3">
           <div>
-            <label className="block text-sm text-text-main/80 mb-1">Unvan (örn. Bebek, Çocuk ve Ergen Psikiyatrisi Uzmanı)</label>
+            <label className="block text-sm text-text-main/80 mb-1">Unvan (örn. Bebek, Çocuk ve Ergen Psikiyatristi Uzmanı)</label>
             <input type="text" value={settings.profileTitle ?? ""} onChange={(e) => update("profileTitle", e.target.value)} className="w-full px-4 py-2 rounded-lg border" />
           </div>
           <div>

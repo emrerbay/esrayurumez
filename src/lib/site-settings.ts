@@ -11,10 +11,22 @@ export interface SiteSettingsMap {
   linkedinUrl?: string;
   whatsappNumber?: string;
   mapEmbedUrl?: string;
+  /** İletişim sayfası: sayfa başlığı */
+  contactPageTitle?: string;
+  /** İletişim sayfası: "İletişim Bilgileri" bölüm başlığı */
+  contactSectionInfo?: string;
+  /** İletişim sayfası: "Randevu / Mesaj" bölüm başlığı */
+  contactSectionForm?: string;
+  /** İletişim sayfası: "Konum" bölüm başlığı */
+  contactSectionMap?: string;
+  /** İletişim sayfası: WhatsApp buton metni */
+  contactWhatsappButton?: string;
+  /** İletişim sayfası: Yol tarifi buton metni */
+  contactDirectionsButton?: string;
   aboutBlocks?: string; // JSON array of { title, content }
   privacyPolicy?: string;
   termsOfUse?: string;
-  /** Anasayfa profil: unvan (örn. Bebek, Çocuk ve Ergen Psikiyatrisi Uzmanı) */
+  /** Anasayfa profil: unvan (örn. Bebek, Çocuk ve Ergen Psikiyatristi Uzmanı) */
   profileTitle?: string;
   /** Kurumlar, satır satır (her satır bir madde) */
   profileInstitutions?: string;
@@ -43,10 +55,16 @@ const DEFAULTS: SiteSettingsMap = {
   linkedinUrl: "",
   whatsappNumber: "905068619439",
   mapEmbedUrl: DEFAULT_MAP_EMBED,
+  contactPageTitle: "İletişim",
+  contactSectionInfo: "İletişim Bilgileri",
+  contactSectionForm: "Randevu / Mesaj",
+  contactSectionMap: "Konum",
+  contactWhatsappButton: "WhatsApp ile Yaz",
+  contactDirectionsButton: "Yol tarifi al",
   aboutBlocks: "[]",
   privacyPolicy: "",
   termsOfUse: "",
-  profileTitle: "Bebek, Çocuk ve Ergen Psikiyatrisi Uzmanı",
+  profileTitle: "Bebek, Çocuk ve Ergen Psikiyatristi Uzmanı",
   profileInstitutions: "Ankara Üniversitesi Tıp Fakültesi\nÇocuk ve Ergen Ruh Sağlığı ve Hastalıkları Anabilim Dalı Öğretim Üyesi\nAnkara Üniversitesi Psikiyatri Otizm Araştırma ve Uygulama Merkezi Yönetim Kurulu Üyesi",
   profileWorkAreas: "Bebek, çocuk ve ergen ruh sağlığı değerlendirme ve tedavisi\nOtizm spektrum bozuklukları\nAile danışmanlığı ve ebeveyn destek programları\nOkul çağı çocuklarında davranış ve dikkat sorunları\nErgenlerde kaygı, depresyon ve kimlik gelişimi",
   footerDescription: "Çocuk ve Ergen Ruh Sağlığı alanında bilimsel ve empatik destek.",

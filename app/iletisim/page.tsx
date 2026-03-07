@@ -26,17 +26,25 @@ export default async function IletisimPage() {
   const directionsAddress = address?.trim() || "Ankara Üniversitesi Tıp Fakültesi Cebeci Hastanesi, Mamak, Ankara";
   const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(directionsAddress)}`;
 
-  const whatsappLink = whatsapp
-    ? `https://wa.me/${whatsapp.replace(/\D/g, "")}`
-    : null;
+  const whatsappLink =
+    whatsapp != null && String(whatsapp).trim() !== ""
+      ? `https://wa.me/${String(whatsapp).replace(/\D/g, "")}`
+      : null;
+
+  const pageTitle = settings?.contactPageTitle?.trim() || "İletişim";
+  const sectionInfo = settings?.contactSectionInfo?.trim() || "İletişim Bilgileri";
+  const sectionForm = settings?.contactSectionForm?.trim() || "Randevu / Mesaj";
+  const sectionMap = settings?.contactSectionMap?.trim() || "Konum";
+  const whatsappButtonText = settings?.contactWhatsappButton?.trim() || "WhatsApp ile Yaz";
+  const directionsButtonText = settings?.contactDirectionsButton?.trim() || "Yol tarifi al";
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-12 md:py-16">
-      <h1 className="font-heading text-3xl font-bold text-text-main mb-8">İletişim</h1>
+      <h1 className="font-heading text-3xl font-bold text-text-main mb-8">{pageTitle}</h1>
 
       <div className="grid md:grid-cols-2 gap-10 mb-12">
         <div>
-          <h2 className="font-heading text-xl font-semibold text-text-main mb-4">İletişim Bilgileri</h2>
+          <h2 className="font-heading text-xl font-semibold text-text-main mb-4">{sectionInfo}</h2>
           <ul className="space-y-3 text-text-main/90">
             {phone && (
               <li>
@@ -64,7 +72,7 @@ export default async function IletisimPage() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#25D366] text-white font-medium hover:opacity-90 transition-opacity"
               >
-                WhatsApp ile Yaz
+                {whatsappButtonText}
               </a>
             )}
             {instagram && (
@@ -83,7 +91,7 @@ export default async function IletisimPage() {
           </div>
         </div>
         <div>
-          <h2 className="font-heading text-xl font-semibold text-text-main mb-4">Randevu / Mesaj</h2>
+          <h2 className="font-heading text-xl font-semibold text-text-main mb-4">{sectionForm}</h2>
           <ContactForm />
         </div>
       </div>
@@ -91,7 +99,7 @@ export default async function IletisimPage() {
       {mapUrl && (
         <div>
           <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
-            <h2 className="font-heading text-lg font-semibold text-text-main">Konum</h2>
+            <h2 className="font-heading text-lg font-semibold text-text-main">{sectionMap}</h2>
             <a
               href={directionsUrl}
               target="_blank"
@@ -102,7 +110,7 @@ export default async function IletisimPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
-              Yol tarifi al
+              {directionsButtonText}
             </a>
           </div>
           <div className="rounded-2xl overflow-hidden border border-gray-200 shadow-sm aspect-video">
