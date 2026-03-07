@@ -26,10 +26,10 @@ function instagramHandle(url: string): string {
 }
 
 export function Footer({ settings }: { settings: SiteSettingsMap | null }) {
-  const phone = settings?.contactPhone?.trim() || FALLBACK_PHONE;
-  const email = settings?.contactEmail?.trim() || FALLBACK_EMAIL;
-  const instagramUrl = settings?.instagramUrl?.trim() || FALLBACK_INSTAGRAM;
-  const description = settings?.footerDescription?.trim() || FALLBACK_DESC;
+  const phone = (settings?.contactPhone != null ? String(settings.contactPhone).trim() : "") || FALLBACK_PHONE;
+  const email = (settings?.contactEmail != null ? String(settings.contactEmail).trim() : "") || FALLBACK_EMAIL;
+  const instagramUrl = (settings?.instagramUrl != null ? String(settings.instagramUrl).trim() : "") || FALLBACK_INSTAGRAM;
+  const description = (settings?.footerDescription != null ? String(settings.footerDescription).trim() : "") || FALLBACK_DESC;
 
   return (
     <footer className="bg-text-main text-white mt-auto">
@@ -41,7 +41,7 @@ export function Footer({ settings }: { settings: SiteSettingsMap | null }) {
               {description}
             </p>
             <div className="flex flex-col gap-2 text-sm text-white/85">
-              <a href={`tel:${phone.replace(/\s/g, "")}`} className="hover:text-white transition-colors">
+              <a href={`tel:${String(phone).replace(/\s/g, "")}`} className="hover:text-white transition-colors">
                 {phone}
               </a>
               <a href={`mailto:${email}`} className="hover:text-white transition-colors">

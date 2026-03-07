@@ -6,7 +6,7 @@ interface BlogCardProps {
   title: string;
   excerpt?: string;
   coverImageUrl?: string;
-  updatedAt: Date;
+  updatedAt: Date | string;
 }
 
 export function BlogCard({ slug, title, excerpt, coverImageUrl, updatedAt }: BlogCardProps) {
